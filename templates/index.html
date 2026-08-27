@@ -39,7 +39,6 @@
 
     <!-- Conteúdo Principal -->
     <main class="max-w-7xl mx-auto px-4 py-6">
-        {% block content %}
         <!-- Seção de Jogos e Cotações -->
         <div class="mb-6">
             <h2 class="text-lg font-bold text-slate-200 flex items-center gap-2">
@@ -48,21 +47,20 @@
             <p class="text-xs text-slate-400">Clique nas odds para simular sua entrada no bilhete</p>
         </div>
 
-        <!-- Exemplo de Card de Partida com Botões Interativos -->
+        <!-- Grid de Partidas Completa -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            
+            <!-- Jogo 1 -->
             <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg hover:border-slate-700 transition">
                 <div class="flex justify-between items-center text-xs text-slate-400 mb-3 pb-2 border-b border-slate-800">
                     <span class="bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded font-bold">1ª Rodada</span>
                     <span>📅 12/09/2026 | 18:00</span>
                 </div>
-                
                 <div class="flex justify-between items-center mb-4 text-sm font-semibold">
                     <span class="w-2/5 text-left truncate">Casados F.C</span>
                     <span class="w-1/5 text-center text-slate-500 font-bold">VS</span>
                     <span class="w-2/5 text-right truncate">Atlético Jóquei</span>
                 </div>
-
-                <!-- Botões de Odds -->
                 <div class="grid grid-cols-3 gap-2">
                     <button onclick="selecionarAposta('Vitória de Casados F.C', '1.85')" class="bg-slate-950 hover:bg-emerald-600 hover:text-slate-950 border border-slate-800 p-2 rounded-lg text-center transition group">
                         <div class="text-[10px] text-slate-400 group-hover:text-slate-900 font-medium">1 (Casa)</div>
@@ -78,11 +76,159 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Jogo 2 -->
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg hover:border-slate-700 transition">
+                <div class="flex justify-between items-center text-xs text-slate-400 mb-3 pb-2 border-b border-slate-800">
+                    <span class="bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded font-bold">1ª Rodada</span>
+                    <span>📅 12/09/2026 | 20:00</span>
+                </div>
+                <div class="flex justify-between items-center mb-4 text-sm font-semibold">
+                    <span class="w-2/5 text-left truncate">WCMT F.C</span>
+                    <span class="w-1/5 text-center text-slate-500 font-bold">VS</span>
+                    <span class="w-2/5 text-right truncate">Clube Desportivo Panteras</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="selecionarAposta('Vitória de WCMT F.C', '1.90')" class="bg-slate-950 hover:bg-emerald-600 hover:text-slate-950 border border-slate-800 p-2 rounded-lg text-center transition group">
+                        <div class="text-[10px] text-slate-400 group-hover:text-slate-900 font-medium">1 (Casa)</div>
+                        <div class="text-xs font-black text-emerald-400 group-hover:text-slate-950">1.90</div>
+                    </button>
+                    <button onclick="selecionarAposta('Empate', '3.30')" class="bg-slate-950 hover:bg-emerald-600 hover:text-slate-950 border border-slate-800 p-2 rounded-lg text-center transition group">
+                        <div class="text-[10px] text-slate-400 group-hover:text-slate-900 font-medium">X (Empate)</div>
+                        <div class="text-xs font-black text-emerald-400 group-hover:text-slate-950">3.30</div>
+                    </button>
+                    <button onclick="selecionarAposta('Vitória de Clube Desportivo Panteras', '2.00')" class="bg-slate-950 hover:bg-emerald-600 hover:text-slate-950 border border-slate-800 p-2 rounded-lg text-center transition group">
+                        <div class="text-[10px] text-slate-400 group-hover:text-slate-900 font-medium">2 (Fora)</div>
+                        <div class="text-xs font-black text-emerald-400 group-hover:text-slate-950">2.00</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Jogo 3 -->
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg hover:border-slate-700 transition">
+                <div class="flex justify-between items-center text-xs text-slate-400 mb-3 pb-2 border-b border-slate-800">
+                    <span class="bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded font-bold">2ª Rodada</span>
+                    <span>📅 26/09/2026 | 18:00</span>
+                </div>
+                <div class="flex justify-between items-center mb-4 text-sm font-semibold">
+                    <span class="w-2/5 text-left truncate">Casados F.C</span>
+                    <span class="w-1/5 text-center text-slate-500 font-bold">VS</span>
+                    <span class="w-2/5 text-right truncate">WCMT F.C</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="selecionarAposta('Vitória de Casados F.C', '2.20')" class="bg-slate-950 hover:bg-emerald-600 hover:text-slate-950 border border-slate-800 p-2 rounded-lg text-center transition group">
+                        <div class="text-[10px] text-slate-400 group-hover:text-slate-900 font-medium">1 (Casa)</div>
+                        <div class="text-xs font-black text-emerald-400 group-hover:text-slate-950">2.20</div>
+                    </button>
+                    <button onclick="selecionarAposta('Empate', '3.20')" class="bg-slate-950 hover:bg-emerald-600 hover:text-slate-950 border border-slate-800 p-2 rounded-lg text-center transition group">
+                        <div class="text-[10px] text-slate-400 group-hover:text-slate-900 font-medium">X (Empate)</div>
+                        <div class="text-xs font-black text-emerald-400 group-hover:text-slate-950">3.20</div>
+                    </button>
+                    <button onclick="selecionarAposta('Vitória de WCMT F.C', '1.75')" class="bg-slate-950 hover:bg-emerald-600 hover:text-slate-950 border border-slate-800 p-2 rounded-lg text-center transition group">
+                        <div class="text-[10px] text-slate-400 group-hover:text-slate-900 font-medium">2 (Fora)</div>
+                        <div class="text-xs font-black text-emerald-400 group-hover:text-slate-950">1.75</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Jogo 4 -->
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg hover:border-slate-700 transition">
+                <div class="flex justify-between items-center text-xs text-slate-400 mb-3 pb-2 border-b border-slate-800">
+                    <span class="bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded font-bold">2ª Rodada</span>
+                    <span>📅 26/09/2026 | 20:00</span>
+                </div>
+                <div class="flex justify-between items-center mb-4 text-sm font-semibold">
+                    <span class="w-2/5 text-left truncate">Atlético Jóquei</span>
+                    <span class="w-1/5 text-center text-slate-500 font-bold">VS</span>
+                    <span class="w-2/5 text-right truncate">Clube Desportivo Panteras</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="selecionarAposta('Vitória de Atlético Jóquei', '2.05')" class="bg-slate-950 hover:bg-emerald-600 hover:text-slate-950 border border-slate-800 p-2 rounded-lg text-center transition group">
+                        <div class="text-[10px] text-slate-400 group-hover:text-slate-900 font-medium">1 (Casa)</div>
+                        <div class="text-xs font-black text-emerald-400 group-hover:text-slate-950">2.05</div>
+                    </button>
+                    <button onclick="selecionarAposta('Empate', '3.10')" class="bg-slate-950 hover:bg-emerald-600 hover:text-slate-950 border border-slate-800 p-2 rounded-lg text-center transition group">
+                        <div class="text-[10px] text-slate-400 group-hover:text-slate-900 font-medium">X (Empate)</div>
+                        <div class="text-xs font-black text-emerald-400 group-hover:text-slate-950">3.10</div>
+                    </button>
+                    <button onclick="selecionarAposta('Vitória de Clube Desportivo Panteras', '1.80')" class="bg-slate-950 hover:bg-emerald-600 hover:text-slate-950 border border-slate-800 p-2 rounded-lg text-center transition group">
+                        <div class="text-[10px] text-slate-400 group-hover:text-slate-900 font-medium">2 (Fora)</div>
+                        <div class="text-xs font-black text-emerald-400 group-hover:text-slate-950">1.80</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Jogo 5 -->
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg hover:border-slate-700 transition">
+                <div class="flex justify-between items-center text-xs text-slate-400 mb-3 pb-2 border-b border-slate-800">
+                    <span class="bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded font-bold">3ª Rodada</span>
+                    <span>📅 10/10/2026 | 18:00</span>
+                </div>
+                <div class="flex justify-between items-center mb-4 text-sm font-semibold">
+                    <span class="w-2/5 text-left truncate">Casados F.C</span>
+                    <span class="w-1/5 text-center text-slate-500 font-bold">VS</span>
+                    <span class="w-2/5 text-right truncate">Clube Desportivo Panteras</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="selecionarAposta('Vitória de Casados F.C', '1.95')" class="bg-slate-950 hover:bg-emerald-600 hover:text-slate-950 border border-slate-800 p-2 rounded-lg text-center transition group">
+                        <div class="text-[10px] text-slate-400 group-hover:text-slate-900 font-medium">1 (Casa)</div>
+                        <div class="text-xs font-black text-emerald-400 group-hover:text-slate-950">1.95</div>
+                    </button>
+                    <button onclick="selecionarAposta('Empate', '3.25')" class="bg-slate-950 hover:bg-emerald-600 hover:text-slate-950 border border-slate-800 p-2 rounded-lg text-center transition group">
+                        <div class="text-[10px] text-slate-400 group-hover:text-slate-900 font-medium">X (Empate)</div>
+                        <div class="text-xs font-black text-emerald-400 group-hover:text-slate-950">3.25</div>
+                    </button>
+                    <button onclick="selecionarAposta('Vitória de Clube Desportivo Panteras', '1.95')" class="bg-slate-950 hover:bg-emerald-600 hover:text-slate-950 border border-slate-800 p-2 rounded-lg text-center transition group">
+                        <div class="text-[10px] text-slate-400 group-hover:text-slate-900 font-medium">2 (Fora)</div>
+                        <div class="text-xs font-black text-emerald-400 group-hover:text-slate-950">1.95</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Jogo 6 -->
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg hover:border-slate-700 transition">
+                <div class="flex justify-between items-center text-xs text-slate-400 mb-3 pb-2 border-b border-slate-800">
+                    <span class="bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded font-bold">3ª Rodada</span>
+                    <span>📅 10/10/2026 | 20:00</span>
+                </div>
+                <div class="flex justify-between items-center mb-4 text-sm font-semibold">
+                    <span class="w-2/5 text-left truncate">Atlético Jóquei</span>
+                    <span class="w-1/5 text-center text-slate-500 font-bold">VS</span>
+                    <span class="w-2/5 text-right truncate">WCMT F.C</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="selecionarAposta('Vitória de Atlético Jóquei', '2.15')" class="bg-slate-950 hover:bg-emerald-600 hover:text-slate-950 border border-slate-800 p-2 rounded-lg text-center transition group">
+                        <div class="text-[10px] text-slate-400 group-hover:text-slate-900 font-medium">1 (Casa)</div>
+                        <div class="text-xs font-black text-emerald-400 group-hover:text-slate-950">2.15</div>
+                    </button>
+                    <button onclick="selecionarAposta('Empate', '3.30')" class="bg-slate-950 hover:bg-emerald-600 hover:text-slate-950 border border-slate-800 p-2 rounded-lg text-center transition group">
+                        <div class="text-[10px] text-slate-400 group-hover:text-slate-900 font-medium">X (Empate)</div>
+                        <div class="text-xs font-black text-emerald-400 group-hover:text-slate-950">3.30</div>
+                    </button>
+                    <button onclick="selecionarAposta('Vitória de WCMT F.C', '1.70')" class="bg-slate-950 hover:bg-emerald-600 hover:text-slate-950 border border-slate-800 p-2 rounded-lg text-center transition group">
+                        <div class="text-[10px] text-slate-400 group-hover:text-slate-900 font-medium">2 (Fora)</div>
+                        <div class="text-xs font-black text-emerald-400 group-hover:text-slate-950">1.70</div>
+                    </button>
+                </div>
+            </div>
+
         </div>
-        {% endblock %}
+
+        <!-- Grande Final -->
+        <div class="mt-6 bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg">
+            <div class="flex justify-between items-center text-xs text-slate-400 mb-3 pb-2 border-b border-slate-800">
+                <span class="bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded font-bold uppercase tracking-wider">Grande Final</span>
+                <span>📅 31/10/2026 | 18:00 - 20:00</span>
+            </div>
+            <div class="flex justify-center items-center py-4 text-sm font-bold text-slate-300">
+                <span class="bg-slate-950 px-4 py-2 rounded-lg border border-slate-800">1º Colocado da Fase</span>
+                <span class="px-4 text-emerald-400 font-black">VS</span>
+                <span class="bg-slate-950 px-4 py-2 rounded-lg border border-slate-800">2º Colocado da Fase</span>
+            </div>
+        </div>
     </main>
 
-    <!-- Script de Notificações Modernas (Substitui o alert feio) -->
+    <!-- Script de Notificações Modernas -->
     <script>
         function mostrarNotificacao(mensagem) {
             const container = document.getElementById('toast-container');
@@ -103,13 +249,11 @@
             
             container.appendChild(toast);
 
-            // Animação de entrada
             setTimeout(() => {
                 toast.style.opacity = '1';
                 toast.style.transform = 'translateY(0)';
             }, 10);
 
-            // Some e remove sozinho após 2.5 segundos
             setTimeout(() => {
                 toast.style.opacity = '0';
                 toast.style.transform = 'translateY(-10px)';
@@ -117,7 +261,6 @@
             }, 2500);
         }
 
-        // Função global que lida com o clique nas odds em qualquer lugar do site
         function selecionarAposta(selecao, odd) {
             mostrarNotificacao(`Seleção adicionada: ${selecao} (${odd})`);
         }
