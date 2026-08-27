@@ -8,197 +8,119 @@
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen">
 
+    <!-- Container para as notificações flutuantes (Toasts) -->
+    <div id="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px;"></div>
+
     <!-- Header / Navbar estilo Betano -->
     <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 shadow-xl">
         <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center">
             <div class="flex items-center space-x-3 mb-3 md:mb-0">
                 <span class="text-3xl">⚽</span>
                 <div>
-                    <h1 class="text-xl font-black tracking-wider text-emerald-400 uppercase">{{ liga.campeonato }}</h1>
+                    <h1 class="text-xl font-black tracking-wider text-emerald-400 uppercase">{{ liga.campeonato if liga and liga.campeonato else 'Liga da Resenha' }}</h1>
                     <p class="text-[10px] text-slate-400">Plataforma Oficial de Palpites</p>
                 </div>
             </div>
             
             <!-- Navegação por Abas -->
             <nav class="flex space-x-2 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
-                <a href="/" class="px-4 py-1.5 rounded-lg text-xs font-bold transition {% if aba_ativa == 'partidas' %}bg-emerald-500 text-slate-950 shadow-md{% else %}text-slate-300 hover:text-white{% endif %}">
-                    🎮 Partidas & Odds
+                <a href="/" class="px-4 py-1.5 rounded-lg text-xs font-bold transition {% if aba_ativa == 'partidas' %}bg-emerald-500 text-slate-950{% else %}text-slate-300 hover:text-white{% endif %}">
+                    ⚽ Partidas & Odds
                 </a>
-                <a href="/apostas" class="px-4 py-1.5 rounded-lg text-xs font-bold transition {% if aba_ativa == 'apostas' %}bg-emerald-500 text-slate-950 shadow-md{% else %}text-slate-300 hover:text-white{% endif %}">
+                <a href="/apostas" class="px-4 py-1.5 rounded-lg text-xs font-bold transition {% if aba_ativa == 'apostas' %}bg-emerald-500 text-slate-950{% else %}text-slate-300 hover:text-white{% endif %}">
                     🎯 Criar Aposta
                 </a>
-                <a href="/elencos" class="px-4 py-1.5 rounded-lg text-xs font-bold transition {% if aba_ativa == 'elencos' %}bg-emerald-500 text-slate-950 shadow-md{% else %}text-slate-300 hover:text-white{% endif %}">
+                <a href="/elencos" class="px-4 py-1.5 rounded-lg text-xs font-bold transition {% if aba_ativa == 'elencos' %}bg-emerald-500 text-slate-950{% else %}text-slate-300 hover:text-white{% endif %}">
                     👥 Elencos & Times
                 </a>
             </nav>
         </div>
     </header>
 
-    <!-- Conteúdo Dinâmico por Aba -->
-    <main class="max-w-7xl mx-auto px-4 py-8">
-
-        {% if aba_ativa == 'partidas' %}
-        <!-- ABA 1: PARTIDAS E ODDS -->
-        <div class="space-y-6">
-            <div class="flex justify-between items-center bg-slate-900 border border-slate-800 p-4 rounded-xl">
-                <div>
-                    <h2 class="text-lg font-bold text-emerald-400 flex items-center">
-                        <span class="mr-2">🔥</span> Próximos Jogos & Cotações
-                    </h2>
-                    <p class="text-xs text-slate-400">Clique nas odds para simular sua entrada no bilhete</p>
-                </div>
-                <span class="text-xs bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-3 py-1 rounded-lg font-semibold">
-                    {{ liga.formato }}
-                </span>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {% for jogo in liga.calendario %}
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-emerald-500/40 transition shadow-lg">
-                    <div class="flex justify-between items-center text-xs text-slate-400 mb-3 border-b border-slate-800 pb-2">
-                        <span class="font-bold text-emerald-400 uppercase tracking-wide">{{ jogo.rodada }}</span>
-                        <span>📅 {{ jogo.data }} | ⏰ {{ jogo.horario }}</span>
-                    </div>
-
-                    <!-- Confronto -->
-                    <div class="flex justify-between items-center my-4">
-                        <div class="text-sm font-bold text-slate-200 w-5/12 text-right">{{ jogo.mandante }}</div>
-                        <div class="text-xs font-black text-slate-500 bg-slate-950 px-2 py-1 rounded">VS</div>
-                        <div class="text-sm font-bold text-slate-200 w-5/12 text-left">{{ jogo.visitante }}</div>
-                    </div>
-
-                    <!-- Botões de Odds -->
-                    <div class="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-slate-800/60 text-center">
-                        <button onclick="alert('Seleção adicionada: Vitória de {{ jogo.mandante }} ({{ jogo.odd_casa }})');" class="bg-slate-950 hover:bg-emerald-500/20 border border-slate-800 hover:border-emerald-500 p-2 rounded-lg transition">
-                            <span class="block text-[10px] text-slate-400">1 (Casa)</span>
-                            <span class="text-xs font-black text-emerald-400">{{ jogo.odd_casa }}</span>
-                        </button>
-                        <button onclick="alert('Seleção adicionada: Empate ({{ jogo.odd_empate }})');" class="bg-slate-950 hover:bg-emerald-500/20 border border-slate-800 hover:border-emerald-500 p-2 rounded-lg transition">
-                            <span class="block text-[10px] text-slate-400">X (Empate)</span>
-                            <span class="text-xs font-black text-slate-400">{{ jogo.odd_empate }}</span>
-                        </button>
-                        <button onclick="alert('Seleção adicionada: Vitória de {{ jogo.visitante }} ({{ jogo.odd_fora }})');" class="bg-slate-950 hover:bg-emerald-500/20 border border-slate-800 hover:border-emerald-500 p-2 rounded-lg transition">
-                            <span class="block text-[10px] text-slate-400">2 (Fora)</span>
-                            <span class="text-xs font-black text-emerald-400">{{ jogo.odd_fora }}</span>
-                        </button>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
+    <!-- Conteúdo Principal -->
+    <main class="max-w-7xl mx-auto px-4 py-6">
+        {% block content %}
+        <!-- Seção de Jogos e Cotações -->
+        <div class="mb-6">
+            <h2 class="text-lg font-bold text-slate-200 flex items-center gap-2">
+                <span>🔥</span> Próximos Jogos & Cotações
+            </h2>
+            <p class="text-xs text-slate-400">Clique nas odds para simular sua entrada no bilhete</p>
         </div>
 
-        {% elif aba_ativa == 'apostas' %}
-        <!-- ABA 2: MERCADOS E CRIAR APOSTA -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-2 space-y-6">
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-lg">
-                    <h2 class="text-lg font-bold text-emerald-400 mb-4 flex items-center">
-                        <span class="mr-2">🎯</span> Mercados Especiais da Resenha
-                    </h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        {% for m in liga.mercados_especiais %}
-                        <div class="bg-slate-950 border border-slate-800 p-4 rounded-xl">
-                            <h3 class="text-xs font-bold text-emerald-400 mb-2 uppercase">{{ m.mercado }}</h3>
-                            <div class="space-y-2">
-                                {% for op in m.opcoes %}
-                                <button onclick="alert('Mercado selecionado: {{ op }}');" class="w-full text-left text-xs bg-slate-900 hover:bg-emerald-500/20 border border-slate-800 hover:border-emerald-500 p-2.5 rounded-lg transition text-slate-300">
-                                    {{ op }}
-                                </button>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
+        <!-- Exemplo de Card de Partida com Botões Interativos -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg hover:border-slate-700 transition">
+                <div class="flex justify-between items-center text-xs text-slate-400 mb-3 pb-2 border-b border-slate-800">
+                    <span class="bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded font-bold">1ª Rodada</span>
+                    <span>📅 12/09/2026 | 18:00</span>
+                </div>
+                
+                <div class="flex justify-between items-center mb-4 text-sm font-semibold">
+                    <span class="w-2/5 text-left truncate">Casados F.C</span>
+                    <span class="w-1/5 text-center text-slate-500 font-bold">VS</span>
+                    <span class="w-2/5 text-right truncate">Atlético Jóquei</span>
                 </div>
 
-                <!-- Formulário de Palpite Personalizado -->
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-lg">
-                    <h2 class="text-lg font-bold text-emerald-400 mb-4 flex items-center">
-                        <span class="mr-2">📝</span> Fechar Bilhete de Palpite
-                    </h2>
-                    <form onsubmit="event.preventDefault(); alert('Palpite registrado com sucesso na resenha!');" class="space-y-4">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs text-slate-400 mb-1">Seu Nome</label>
-                                <input type="text" placeholder="Ex: Guilherme" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-emerald-500" required>
-                            </div>
-                            <div>
-                                <label class="block text-xs text-slate-400 mb-1">Escolher Partida</label>
-                                <select class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-emerald-500">
-                                    {% for jogo in liga.calendario %}
-                                    <option>{{ jogo.mandante }} x {{ jogo.visitante }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs text-slate-400 mb-1">Palpite Placar Exato</label>
-                                <input type="text" placeholder="Ex: 3 x 2" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-emerald-500">
-                            </div>
-                            <div>
-                                <label class="block text-xs text-slate-400 mb-1">Valor Apostado (R$)</label>
-                                <input type="number" placeholder="10.00" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-emerald-500">
-                            </div>
-                        </div>
-                        <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-3 rounded-lg transition shadow-md">
-                            Confirmar Aposta na Resenha 🚀
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Resumo do Bilhete Lateral -->
-            <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-lg h-fit">
-                <h3 class="text-sm font-bold text-emerald-400 mb-3 flex items-center">
-                    <span class="mr-2">🎟️</span> Seu Bilhete de Apostas
-                </h3>
-                <div class="bg-slate-950 border border-slate-800 p-4 rounded-xl text-center text-xs text-slate-400 py-10">
-                    Nenhuma seleção feita ainda.<br>Clique nas odds dos jogos para montar sua aposta!
+                <!-- Botões de Odds -->
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="selecionarAposta('Vitória de Casados F.C', '1.85')" class="bg-slate-950 hover:bg-emerald-600 hover:text-slate-950 border border-slate-800 p-2 rounded-lg text-center transition group">
+                        <div class="text-[10px] text-slate-400 group-hover:text-slate-900 font-medium">1 (Casa)</div>
+                        <div class="text-xs font-black text-emerald-400 group-hover:text-slate-950">1.85</div>
+                    </button>
+                    <button onclick="selecionarAposta('Empate', '3.40')" class="bg-slate-950 hover:bg-emerald-600 hover:text-slate-950 border border-slate-800 p-2 rounded-lg text-center transition group">
+                        <div class="text-[10px] text-slate-400 group-hover:text-slate-900 font-medium">X (Empate)</div>
+                        <div class="text-xs font-black text-emerald-400 group-hover:text-slate-950">3.40</div>
+                    </button>
+                    <button onclick="selecionarAposta('Vitória de Atlético Jóquei', '2.10')" class="bg-slate-950 hover:bg-emerald-600 hover:text-slate-950 border border-slate-800 p-2 rounded-lg text-center transition group">
+                        <div class="text-[10px] text-slate-400 group-hover:text-slate-900 font-medium">2 (Fora)</div>
+                        <div class="text-xs font-black text-emerald-400 group-hover:text-slate-950">2.10</div>
+                    </button>
                 </div>
             </div>
         </div>
-
-        {% elif aba_ativa == 'elencos' %}
-        <!-- ABA 3: ELENCOS E TIMES -->
-        <div class="space-y-6">
-            <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-                <h2 class="text-lg font-bold text-emerald-400 flex items-center">
-                    <span class="mr-2">👥</span> Clubes & Elencos Oficiais
-                </h2>
-                <p class="text-xs text-slate-400">Relação completa de jogadores, números e posições da Liga da Resenha</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {% for time, jogadores in liga.elencos.items() %}
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg">
-                    <h3 class="text-sm font-bold text-emerald-400 uppercase tracking-wide mb-3 border-b border-slate-800 pb-2 flex justify-between items-center">
-                        <span>🛡️ {{ time }}</span>
-                        <span class="text-[10px] bg-slate-950 px-2.5 py-1 rounded text-slate-400">{{ jogadores|length }} Atletas</span>
-                    </h3>
-                    <div class="space-y-2 max-h-64 overflow-y-auto pr-1">
-                        {% for jog in jogadores %}
-                        <div class="bg-slate-950 border border-slate-800 p-2.5 rounded-lg flex justify-between items-center text-xs">
-                            <span class="text-slate-200 font-medium">
-                                {% if jog.numero != '-' %}<strong class="text-emerald-400 mr-1">#{{ jog.numero }}</strong>{% endif %}
-                                {{ jog.nome }}
-                            </span>
-                            <span class="text-slate-500 text-[10px] bg-slate-900 px-2 py-0.5 rounded">{{ jog.posicao }}</span>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        {% endif %}
-
+        {% endblock %}
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500 mt-16">
-        Liga da Resenha &copy; 2026 — Desenvolvido com Python (Flask) e Tailwind.
-    </footer>
+    <!-- Script de Notificações Modernas (Substitui o alert feio) -->
+    <script>
+        function mostrarNotificacao(mensagem) {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+            
+            const toast = document.createElement('div');
+            toast.innerText = mensagem;
+            toast.style.background = '#10B981'; // Verde esmeralda moderno
+            toast.style.color = '#020617';      // Texto escuro contrastante
+            toast.style.padding = '12px 20px';
+            toast.style.borderRadius = '8px';
+            toast.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.3)';
+            toast.style.fontWeight = '700';
+            toast.style.fontSize = '13px';
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(-10px)';
+            toast.style.transition = 'all 0.3s ease';
+            
+            container.appendChild(toast);
 
+            // Animação de entrada
+            setTimeout(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateY(0)';
+            }, 10);
+
+            // Some e remove sozinho após 2.5 segundos
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-10px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        // Função global que lida com o clique nas odds em qualquer lugar do site
+        function selecionarAposta(selecao, odd) {
+            mostrarNotificacao(`Seleção adicionada: ${selecao} (${odd})`);
+        }
+    </script>
 </body>
 </html>
