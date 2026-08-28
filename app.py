@@ -35,8 +35,13 @@ class Aposta(db.Model):
 with app.app_context():
     db.create_all()
     admin_user = User.query.filter_by(username='admin').first()
-    if not admin_user:
-        hashed_pw = generate_password_hash('admin123')
+    if admin_user:
+        # Atualiza apenas a sua senha, mantendo todos os outros utilizadores intactos
+        admin_user.password = generate_password_hash('Agui13579!')
+        db.session.commit()
+    else:
+        # Se por acaso a base de dados estiver vazia, cria o admin do zero
+        hashed_pw = generate_password_hash('Agui13579!')
         admin = User(username='admin', password=hashed_pw, creditos=1000.0, is_admin=True)
         db.session.add(admin)
         db.session.commit()
