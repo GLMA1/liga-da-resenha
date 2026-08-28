@@ -8,7 +8,6 @@ app.config['SECRET_KEY'] = 'chave-secreta-liga-da-resenha-2026'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
 
-# Filtro do Jinja para ler o JSON das seleções no histórico de apostas
 @app.template_filter('from_json')
 def from_json_filter(value):
     try:
@@ -20,7 +19,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
-    creditos = db.Column(db.Float, default=10.0) # Começa com 10 créditos grátis
+    creditos = db.Column(db.Float, default=10.0)
     is_admin = db.Column(db.Boolean, default=False)
     apostas = db.relationship('Aposta', backref='user', lazy=True)
 
@@ -28,14 +27,13 @@ class Aposta(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     valor = db.Column(db.Float, nullable=False)
-    selecoes = db.Column(db.Text, nullable=False) # Armazenado como string JSON
+    selecoes = db.Column(db.Text, nullable=False)
     odd_total = db.Column(db.Float, nullable=False)
     retorno = db.Column(db.Float, nullable=False)
-    status = db.Column(db.String(20), default='Pendente') # Pendente, Ganha, Perdida
+    status = db.Column(db.String(20), default='Pendente')
 
 with app.app_context():
     db.create_all()
-    # Cria um administrador padrão se não existir (Usuário: admin / Senha: admin123)
     admin_user = User.query.filter_by(username='admin').first()
     if not admin_user:
         hashed_pw = generate_password_hash('admin123')
@@ -128,6 +126,24 @@ def liquidar_aposta(aposta_id, status):
             aposta.user.creditos += aposta.retorno
         db.session.commit()
     
+    return redirect(url_for('admin'))
+
+# NOVA ROTA: Reembolsar / Devolver créditos de todas as apostas pendentes
+@app.route('/admin/reembolsar_todas')
+def reembolsar_todas():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    usuario = User.query.get(session['user_id'])
+    if not usuario or not usuario.is_admin:
+        return redirect(url_for('index'))
+    
+    apostas_pendentes = Aposta.query.filter_by(status='Pendente').all()
+    for aposta in apostas_pendentes:
+        aposta.user.creditos += aposta.valor  # Devolve o valor apostado
+        aposta.status = 'Reembolsada'        # Marca como reembolsada
+    
+    db.session.commit()
+    flash('Créditos devolvidos com sucesso para todos os apostadores!', 'success')
     return redirect(url_for('admin'))
 
 @app.route('/fazer_aposta', methods=['POST'])

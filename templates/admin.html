@@ -10,11 +10,24 @@
     <div class="max-w-6xl mx-auto">
         <div class="flex justify-between items-center mb-8 bg-slate-900 p-6 rounded-xl border border-slate-800">
             <div>
-                <h1 class="text-2xl font-black text-emerald-400">⚙️ PAINEL DO ADMINISTRADOR</h1>
-                <p class="text-slate-400 text-sm">Gerenciamento de usuários e liquidação de apostas</p>
+                <h1 class="text-2xl font-black text-emerald-400">⚙️ PAINEL DO ADMINISTRADOR (DM)</h1>
+                <p class="text-slate-400 text-sm">Controle de saldos, testes e liquidação de apostas</p>
             </div>
-            <a href="{{ url_for('index') }}" class="bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded font-semibold text-sm transition">Voltar ao Site</a>
+            <div class="flex gap-3">
+                <a href="{{ url_for('reembolsar_todas') }}" onclick="return confirm('Tem certeza que deseja devolver os créditos de todas as apostas pendentes?')" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold px-4 py-2 rounded text-sm transition">🔄 Reembolsar Todos os Créditos</a>
+                <a href="{{ url_for('index') }}" class="bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded font-semibold text-sm transition">Voltar ao Site</a>
+            </div>
         </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="mb-6 p-4 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-sm font-bold">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
@@ -65,9 +78,12 @@
                                         <span class="bg-amber-500/20 text-amber-300 px-2 py-1 rounded text-xs">Pendente</span>
                                     {% elif a.status == 'Ganha' %}
                                         <span class="bg-emerald-500/20 text-emerald-300 px-2 py-1 rounded text-xs">Ganha</span>
+                                    {% elif a.status == 'Reembolsada' %}
+                                        <span class="bg-blue-500/20 text-blue-300 px-2 py-1 rounded text-xs">Reembolsada</span>
                                     {% else %}
                                         <span class="bg-red-500/20 text-red-300 px-2 py-1 rounded text-xs">Perdida</span>
                                     {% endif %}
+                                endif
                                 </td>
                                 <td class="p-3">
                                     {% if a.status == 'Pendente' %}
