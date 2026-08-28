@@ -18,7 +18,7 @@
 
             <nav class="flex gap-2">
                 <a href="{{ url_for('index') }}" class="px-4 py-2 rounded-lg font-semibold text-sm transition {% if aba_ativa == 'partidas' %}bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/20{% else %}bg-slate-800 text-slate-300 hover:bg-slate-700{% endif %}">
-                    <i class="fa-solid fa-futbol mr-1"></i> Partidas
+                    <i class="fa-solid fa-futbol mr-1"></i> Partidas & Odds
                 </a>
                 <a href="{{ url_for('elencos') }}" class="px-4 py-2 rounded-lg font-semibold text-sm transition {% if aba_ativa == 'elencos' %}bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/20{% else %}bg-slate-800 text-slate-300 hover:bg-slate-700{% endif %}">
                     <i class="fa-solid fa-users mr-1"></i> Elencos
@@ -53,83 +53,320 @@
         {% if aba_ativa == 'partidas' %}
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            <div class="lg:col-span-2 space-y-6">
+            <div class="lg:col-span-2 space-y-8">
                 <div class="border-l-4 border-emerald-400 pl-3">
-                    <h2 class="text-2xl font-black text-white">1ª Rodada - Fase de Grupos</h2>
-                    <p class="text-sm text-slate-400">Clique nas odds para montar o seu bilhete de palpites.</p>
+                    <h2 class="text-2xl font-black text-white">Calendário Oficial & Cotações</h2>
+                    <p class="text-sm text-slate-400">Clique nas cotações (vitórias ou quantidade de gols) para montar seu bilhete.</p>
                 </div>
 
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg">
-                    <div class="flex justify-between items-center text-xs text-slate-400 mb-4 border-b border-slate-800 pb-2">
-                        <span><i class="fa-solid fa-calendar-days text-emerald-400 mr-1"></i> Rodada 1 • Campo Principal</span>
-                        <span class="bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded font-bold">Ao Vivo / Em Breve</span>
+                <div class="space-y-4">
+                    <div class="bg-emerald-950/40 border border-emerald-500/30 px-4 py-2 rounded-lg flex justify-between items-center">
+                        <span class="font-bold text-emerald-400 text-sm"><i class="fa-solid fa-calendar-day mr-2"></i> 1ª Rodada</span>
+                        <span class="text-xs text-slate-400">12/09/2026</span>
                     </div>
 
-                    <div class="flex justify-between items-center mb-6">
-                        <div class="text-center w-5/12">
-                            <h3 class="font-black text-lg text-white">Casados F.C.</h3>
-                            <span class="text-xs text-slate-500">Mandante</span>
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg">
+                        <div class="flex justify-between items-center text-xs text-slate-400 mb-3 pb-2 border-b border-slate-800">
+                            <span>🕒 18:00</span>
+                            <span class="text-emerald-400 font-bold">Resultado 1X2 & Gols</span>
                         </div>
-                        <div class="text-center w-2/12">
-                            <span class="text-xs font-bold bg-slate-800 px-2.5 py-1 rounded text-slate-400">VS</span>
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="text-center w-5/12"><h3 class="font-black text-base text-white">Casados F.C.</h3></div>
+                            <div class="text-center w-2/12"><span class="text-xs font-bold bg-slate-800 px-2 py-1 rounded text-slate-400">VS</span></div>
+                            <div class="text-center w-5/12"><h3 class="font-black text-base text-white">Panteras</h3></div>
                         </div>
-                        <div class="text-center w-5/12">
-                            <h3 class="font-black text-lg text-white">Panteras</h3>
-                            <span class="text-xs text-slate-500">Visitante</span>
+                        <div class="grid grid-cols-3 gap-2 mb-3">
+                            <button onclick="adicionarSelecao('Casados vs Panteras (12/09)', 'Vitória: Casados F.C.', 1.85)" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-lg text-center transition group">
+                                <span class="block text-[10px] text-slate-400">1 (Casa)</span>
+                                <span class="font-bold text-emerald-400 text-xs">1.85</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Casados vs Panteras (12/09)', 'Empate', 3.40)" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-lg text-center transition group">
+                                <span class="block text-[10px] text-slate-400">X (Empate)</span>
+                                <span class="font-bold text-emerald-400 text-xs">3.40</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Casados vs Panteras (12/09)', 'Vitória: Panteras', 1.95)" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-lg text-center transition group">
+                                <span class="block text-[10px] text-slate-400">2 (Fora)</span>
+                                <span class="font-bold text-emerald-400 text-xs">1.95</span>
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-4 gap-2 pt-2 border-t border-slate-800/80">
+                            <button onclick="adicionarSelecao('Casados vs Panteras (12/09)', 'Mais de 1 Gol', 1.30)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+1 Gol</span><span class="font-bold text-emerald-400">1.30</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Casados vs Panteras (12/09)', 'Mais de 2 Gols', 1.70)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+2 Gols</span><span class="font-bold text-emerald-400">1.70</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Casados vs Panteras (12/09)', 'Mais de 3 Gols', 2.20)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+3 Gols</span><span class="font-bold text-emerald-400">2.20</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Casados vs Panteras (12/09)', 'Mais de 4 Gols', 3.10)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+4 Gols</span><span class="font-bold text-emerald-400">3.10</span>
+                            </button>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-3 gap-3">
-                        <button onclick="adicionarSelecao('Casados vs Panteras', 'Casados F.C.', 1.85, '1')" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-lg text-center transition group">
-                            <span class="block text-xs text-slate-400 group-hover:text-emerald-400">1 (Casados)</span>
-                            <span class="font-bold text-emerald-400">1.85</span>
-                        </button>
-                        <button onclick="adicionarSelecao('Casados vs Panteras', 'Empate', 3.40, 'X')" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-lg text-center transition group">
-                            <span class="block text-xs text-slate-400 group-hover:text-emerald-400">Empate</span>
-                            <span class="font-bold text-emerald-400">3.40</span>
-                        </button>
-                        <button onclick="adicionarSelecao('Casados vs Panteras', 'Panteras', 1.95, '2')" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-lg text-center transition group">
-                            <span class="block text-xs text-slate-400 group-hover:text-emerald-400">2 (Panteras)</span>
-                            <span class="font-bold text-emerald-400">1.95</span>
-                        </button>
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg">
+                        <div class="flex justify-between items-center text-xs text-slate-400 mb-3 pb-2 border-b border-slate-800">
+                            <span>🕒 19:00</span>
+                            <span class="text-emerald-400 font-bold">Resultado 1X2 & Gols</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="text-center w-5/12"><h3 class="font-black text-base text-white">Atlético Jóquei</h3></div>
+                            <div class="text-center w-2/12"><span class="text-xs font-bold bg-slate-800 px-2 py-1 rounded text-slate-400">VS</span></div>
+                            <div class="text-center w-5/12"><h3 class="font-black text-base text-white">WCMT F.C.</h3></div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 mb-3">
+                            <button onclick="adicionarSelecao('Atlético Jóquei vs WCMT (12/09)', 'Vitória: Atlético Jóquei', 2.10)" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-lg text-center transition group">
+                                <span class="block text-[10px] text-slate-400">1 (Casa)</span>
+                                <span class="font-bold text-emerald-400 text-xs">2.10</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Atlético Jóquei vs WCMT (12/09)', 'Empate', 3.20)" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-lg text-center transition group">
+                                <span class="block text-[10px] text-slate-400">X (Empate)</span>
+                                <span class="font-bold text-emerald-400 text-xs">3.20</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Atlético Jóquei vs WCMT (12/09)', 'Vitória: WCMT F.C.', 1.70)" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-lg text-center transition group">
+                                <span class="block text-[10px] text-slate-400">2 (Fora)</span>
+                                <span class="font-bold text-emerald-400 text-xs">1.70</span>
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-4 gap-2 pt-2 border-t border-slate-800/80">
+                            <button onclick="adicionarSelecao('Atlético Jóquei vs WCMT (12/09)', 'Mais de 1 Gol', 1.25)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+1 Gol</span><span class="font-bold text-emerald-400">1.25</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Atlético Jóquei vs WCMT (12/09)', 'Mais de 2 Gols', 1.65)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+2 Gols</span><span class="font-bold text-emerald-400">1.65</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Atlético Jóquei vs WCMT (12/09)', 'Mais de 3 Gols', 2.10)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+3 Gols</span><span class="font-bold text-emerald-400">2.10</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Atlético Jóquei vs WCMT (12/09)', 'Mais de 4 Gols', 2.90)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+4 Gols</span><span class="font-bold text-emerald-400">2.90</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg">
-                    <div class="flex justify-between items-center text-xs text-slate-400 mb-4 border-b border-slate-800 pb-2">
-                        <span><i class="fa-solid fa-calendar-days text-emerald-400 mr-1"></i> Rodada 1 • Campo Principal</span>
-                        <span class="bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded font-bold">Ao Vivo / Em Breve</span>
+                <div class="space-y-4">
+                    <div class="bg-emerald-950/40 border border-emerald-500/30 px-4 py-2 rounded-lg flex justify-between items-center">
+                        <span class="font-bold text-emerald-400 text-sm"><i class="fa-solid fa-calendar-day mr-2"></i> 2ª Rodada</span>
+                        <span class="text-xs text-slate-400">26/09/2026</span>
                     </div>
 
-                    <div class="flex justify-between items-center mb-6">
-                        <div class="text-center w-5/12">
-                            <h3 class="font-black text-lg text-white">Atlético Jóquei</h3>
-                            <span class="text-xs text-slate-500">Mandante</span>
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg">
+                        <div class="flex justify-between items-center text-xs text-slate-400 mb-3 pb-2 border-b border-slate-800">
+                            <span>🕒 18:00</span>
+                            <span class="text-emerald-400 font-bold">Resultado 1X2 & Gols</span>
                         </div>
-                        <div class="text-center w-2/12">
-                            <span class="text-xs font-bold bg-slate-800 px-2.5 py-1 rounded text-slate-400">VS</span>
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="text-center w-5/12"><h3 class="font-black text-base text-white">Casados F.C.</h3></div>
+                            <div class="text-center w-2/12"><span class="text-xs font-bold bg-slate-800 px-2 py-1 rounded text-slate-400">VS</span></div>
+                            <div class="text-center w-5/12"><h3 class="font-black text-base text-white">WCMT F.C.</h3></div>
                         </div>
-                        <div class="text-center w-5/12">
-                            <h3 class="font-black text-lg text-white">WCMT F.C.</h3>
-                            <span class="text-xs text-slate-500">Visitante</span>
+                        <div class="grid grid-cols-3 gap-2 mb-3">
+                            <button onclick="adicionarSelecao('Casados vs WCMT (26/09)', 'Vitória: Casados F.C.', 2.20)" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-lg text-center transition group">
+                                <span class="block text-[10px] text-slate-400">1 (Casa)</span>
+                                <span class="font-bold text-emerald-400 text-xs">2.20</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Casados vs WCMT (26/09)', 'Empate', 3.30)" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-lg text-center transition group">
+                                <span class="block text-[10px] text-slate-400">X (Empate)</span>
+                                <span class="font-bold text-emerald-400 text-xs">3.30</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Casados vs WCMT (26/09)', 'Vitória: WCMT F.C.', 1.75)" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-lg text-center transition group">
+                                <span class="block text-[10px] text-slate-400">2 (Fora)</span>
+                                <span class="font-bold text-emerald-400 text-xs">1.75</span>
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-4 gap-2 pt-2 border-t border-slate-800/80">
+                            <button onclick="adicionarSelecao('Casados vs WCMT (26/09)', 'Mais de 1 Gol', 1.28)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+1 Gol</span><span class="font-bold text-emerald-400">1.28</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Casados vs WCMT (26/09)', 'Mais de 2 Gols', 1.68)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+2 Gols</span><span class="font-bold text-emerald-400">1.68</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Casados vs WCMT (26/09)', 'Mais de 3 Gols', 2.15)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+3 Gols</span><span class="font-bold text-emerald-400">2.15</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Casados vs WCMT (26/09)', 'Mais de 4 Gols', 3.00)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+4 Gols</span><span class="font-bold text-emerald-400">3.00</span>
+                            </button>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-3 gap-3">
-                        <button onclick="adicionarSelecao('Atlético Jóquei vs WCMT', 'Atlético Jóquei', 2.10, '1')" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-lg text-center transition group">
-                            <span class="block text-xs text-slate-400 group-hover:text-emerald-400">1 (Jóquei)</span>
-                            <span class="font-bold text-emerald-400">2.10</span>
-                        </button>
-                        <button onclick="adicionarSelecao('Atlético Jóquei vs WCMT', 'Empate', 3.20, 'X')" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-lg text-center transition group">
-                            <span class="block text-xs text-slate-400 group-hover:text-emerald-400">Empate</span>
-                            <span class="font-bold text-emerald-400">3.20</span>
-                        </button>
-                        <button onclick="adicionarSelecao('Atlético Jóquei vs WCMT', 'WCMT F.C.', 1.70, '2')" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-3 rounded-lg text-center transition group">
-                            <span class="block text-xs text-slate-400 group-hover:text-emerald-400">2 (WCMT)</span>
-                            <span class="font-bold text-emerald-400">1.70</span>
-                        </button>
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg">
+                        <div class="flex justify-between items-center text-xs text-slate-400 mb-3 pb-2 border-b border-slate-800">
+                            <span>🕒 19:00</span>
+                            <span class="text-emerald-400 font-bold">Resultado 1X2 & Gols</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="text-center w-5/12"><h3 class="font-black text-base text-white">Panteras</h3></div>
+                            <div class="text-center w-2/12"><span class="text-xs font-bold bg-slate-800 px-2 py-1 rounded text-slate-400">VS</span></div>
+                            <div class="text-center w-5/12"><h3 class="font-black text-base text-white">Atlético Jóquei</h3></div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 mb-3">
+                            <button onclick="adicionarSelecao('Panteras vs Atlético Jóquei (26/09)', 'Vitória: Panteras', 1.80)" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-lg text-center transition group">
+                                <span class="block text-[10px] text-slate-400">1 (Casa)</span>
+                                <span class="font-bold text-emerald-400 text-xs">1.80</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Panteras vs Atlético Jóquei (26/09)', 'Empate', 3.40)" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-lg text-center transition group">
+                                <span class="block text-[10px] text-slate-400">X (Empate)</span>
+                                <span class="font-bold text-emerald-400 text-xs">3.40</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Panteras vs Atlético Jóquei (26/09)', 'Vitória: Atlético Jóquei', 2.05)" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-lg text-center transition group">
+                                <span class="block text-[10px] text-slate-400">2 (Fora)</span>
+                                <span class="font-bold text-emerald-400 text-xs">2.05</span>
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-4 gap-2 pt-2 border-t border-slate-800/80">
+                            <button onclick="adicionarSelecao('Panteras vs Atlético Jóquei (26/09)', 'Mais de 1 Gol', 1.30)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+1 Gol</span><span class="font-bold text-emerald-400">1.30</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Panteras vs Atlético Jóquei (26/09)', 'Mais de 2 Gols', 1.72)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+2 Gols</span><span class="font-bold text-emerald-400">1.72</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Panteras vs Atlético Jóquei (26/09)', 'Mais de 3 Gols', 2.25)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+3 Gols</span><span class="font-bold text-emerald-400">2.25</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Panteras vs Atlético Jóquei (26/09)', 'Mais de 4 Gols', 3.20)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+4 Gols</span><span class="font-bold text-emerald-400">3.20</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
+
+                <div class="space-y-4">
+                    <div class="bg-emerald-950/40 border border-emerald-500/30 px-4 py-2 rounded-lg flex justify-between items-center">
+                        <span class="font-bold text-emerald-400 text-sm"><i class="fa-solid fa-calendar-day mr-2"></i> 3ª Rodada</span>
+                        <span class="text-xs text-slate-400">10/10/2026</span>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg">
+                        <div class="flex justify-between items-center text-xs text-slate-400 mb-3 pb-2 border-b border-slate-800">
+                            <span>🕒 18:00</span>
+                            <span class="text-emerald-400 font-bold">Resultado 1X2 & Gols</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="text-center w-5/12"><h3 class="font-black text-base text-white">Casados F.C.</h3></div>
+                            <div class="text-center w-2/12"><span class="text-xs font-bold bg-slate-800 px-2 py-1 rounded text-slate-400">VS</span></div>
+                            <div class="text-center w-5/12"><h3 class="font-black text-base text-white">Atlético Jóquei</h3></div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 mb-3">
+                            <button onclick="adicionarSelecao('Casados vs Atlético Jóquei (10/10)', 'Vitória: Casados F.C.', 1.90)" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-lg text-center transition group">
+                                <span class="block text-[10px] text-slate-400">1 (Casa)</span>
+                                <span class="font-bold text-emerald-400 text-xs">1.90</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Casados vs Atlético Jóquei (10/10)', 'Empate', 3.30)" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-lg text-center transition group">
+                                <span class="block text-[10px] text-slate-400">X (Empate)</span>
+                                <span class="font-bold text-emerald-400 text-xs">3.30</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Casados vs Atlético Jóquei (10/10)', 'Vitória: Atlético Jóquei', 2.00)" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-lg text-center transition group">
+                                <span class="block text-[10px] text-slate-400">2 (Fora)</span>
+                                <span class="font-bold text-emerald-400 text-xs">2.00</span>
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-4 gap-2 pt-2 border-t border-slate-800/80">
+                            <button onclick="adicionarSelecao('Casados vs Atlético Jóquei (10/10)', 'Mais de 1 Gol', 1.28)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+1 Gol</span><span class="font-bold text-emerald-400">1.28</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Casados vs Atlético Jóquei (10/10)', 'Mais de 2 Gols', 1.68)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+2 Gols</span><span class="font-bold text-emerald-400">1.68</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Casados vs Atlético Jóquei (10/10)', 'Mais de 3 Gols', 2.15)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+3 Gols</span><span class="font-bold text-emerald-400">2.15</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Casados vs Atlético Jóquei (10/10)', 'Mais de 4 Gols', 3.00)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+4 Gols</span><span class="font-bold text-emerald-400">3.00</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg">
+                        <div class="flex justify-between items-center text-xs text-slate-400 mb-3 pb-2 border-b border-slate-800">
+                            <span>🕒 19:00</span>
+                            <span class="text-emerald-400 font-bold">Resultado 1X2 & Gols</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="text-center w-5/12"><h3 class="font-black text-base text-white">Panteras</h3></div>
+                            <div class="text-center w-2/12"><span class="text-xs font-bold bg-slate-800 px-2 py-1 rounded text-slate-400">VS</span></div>
+                            <div class="text-center w-5/12"><h3 class="font-black text-base text-white">WCMT F.C.</h3></div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 mb-3">
+                            <button onclick="adicionarSelecao('Panteras vs WCMT (10/10)', 'Vitória: Panteras', 1.95)" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-lg text-center transition group">
+                                <span class="block text-[10px] text-slate-400">1 (Casa)</span>
+                                <span class="font-bold text-emerald-400 text-xs">1.95</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Panteras vs WCMT (10/10)', 'Empate', 3.25)" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-lg text-center transition group">
+                                <span class="block text-[10px] text-slate-400">X (Empate)</span>
+                                <span class="font-bold text-emerald-400 text-xs">3.25</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Panteras vs WCMT (10/10)', 'Vitória: WCMT F.C.', 1.80)" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-lg text-center transition group">
+                                <span class="block text-[10px] text-slate-400">2 (Fora)</span>
+                                <span class="font-bold text-emerald-400 text-xs">1.80</span>
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-4 gap-2 pt-2 border-t border-slate-800/80">
+                            <button onclick="adicionarSelecao('Panteras vs WCMT (10/10)', 'Mais de 1 Gol', 1.30)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+1 Gol</span><span class="font-bold text-emerald-400">1.30</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Panteras vs WCMT (10/10)', 'Mais de 2 Gols', 1.70)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+2 Gols</span><span class="font-bold text-emerald-400">1.70</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Panteras vs WCMT (10/10)', 'Mais de 3 Gols', 2.20)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+3 Gols</span><span class="font-bold text-emerald-400">2.20</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Panteras vs WCMT (10/10)', 'Mais de 4 Gols', 3.10)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+4 Gols</span><span class="font-bold text-emerald-400">3.10</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="bg-amber-500/10 border border-amber-500/30 px-4 py-2 rounded-lg flex justify-between items-center">
+                        <span class="font-black text-amber-400 text-sm"><i class="fa-solid fa-trophy mr-2"></i> Grande Final</span>
+                        <span class="text-xs text-slate-400">31/10/2026</span>
+                    </div>
+
+                    <div class="bg-slate-900 border border-amber-500/40 rounded-xl p-5 shadow-xl">
+                        <div class="flex justify-between items-center text-xs text-slate-400 mb-3 pb-2 border-b border-slate-800">
+                            <span>🕒 18:00</span>
+                            <span class="text-amber-400 font-bold">Decisão do Título</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="text-center w-5/12"><h3 class="font-black text-base text-amber-400">1º Colocado</h3></div>
+                            <div class="text-center w-2/12"><span class="text-xs font-bold bg-slate-800 px-2 py-1 rounded text-slate-400">VS</span></div>
+                            <div class="text-center w-5/12"><h3 class="font-black text-base text-amber-400">2º Colocado</h3></div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 mb-3">
+                            <button onclick="adicionarSelecao('Grande Final (31/10)', 'Campeão: 1º Colocado', 1.70)" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-lg text-center transition group">
+                                <span class="block text-[10px] text-slate-400">Vitória 1º Col.</span>
+                                <span class="font-bold text-amber-400 text-xs">1.70</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Grande Final (31/10)', 'Empate / Prorrogação', 4.50)" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-lg text-center transition group">
+                                <span class="block text-[10px] text-slate-400">Empate (Decisão)</span>
+                                <span class="font-bold text-amber-400 text-xs">4.50</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Grande Final (31/10)', 'Campeão: 2º Colocado', 2.10)" class="odd-btn bg-slate-800 hover:bg-slate-700 border border-slate-700 p-2.5 rounded-lg text-center transition group">
+                                <span class="block text-[10px] text-slate-400">Vitória 2º Col.</span>
+                                <span class="font-bold text-amber-400 text-xs">2.10</span>
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-4 gap-2 pt-2 border-t border-slate-800/80">
+                            <button onclick="adicionarSelecao('Grande Final (31/10)', 'Mais de 1 Gol', 1.20)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+1 Gol</span><span class="font-bold text-amber-400">1.20</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Grande Final (31/10)', 'Mais de 2 Gols', 1.55)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+2 Gols</span><span class="font-bold text-amber-400">1.55</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Grande Final (31/10)', 'Mais de 3 Gols', 2.00)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+3 Gols</span><span class="font-bold text-amber-400">2.00</span>
+                            </button>
+                            <button onclick="adicionarSelecao('Grande Final (31/10)', 'Mais de 4 Gols', 2.75)" class="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-1.5 rounded text-center text-xs">
+                                <span class="text-[10px] text-slate-400 block">+4 Gols</span><span class="font-bold text-amber-400">2.75</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <div class="lg:col-span-1">
@@ -142,7 +379,7 @@
                     </div>
 
                     <div id="lista-selecoes" class="space-y-3 mb-4 max-h-60 overflow-y-auto pr-1">
-                        <p class="text-xs text-slate-500 text-center py-6">Seu bilhete está vazio. Clique nas odds dos jogos para adicionar palpites.</p>
+                        <p class="text-xs text-slate-500 text-center py-6">Seu bilhete está vazio. Clique nas cotações dos jogos para adicionar palpites.</p>
                     </div>
 
                     <div id="resumo-aposta" class="hidden space-y-3 border-t border-slate-800 pt-4">
@@ -386,12 +623,9 @@
     <script>
         let selecoesBilhete = [];
 
-        function adicionarSelecao(jogo, escolha, odd, tipo) {
-            // Remove seleção anterior do mesmo jogo
+        function adicionarSelecao(jogo, escolha, odd) {
             selecoesBilhete = selecoesBilhete.filter(s => s.jogo !== jogo);
-            
-            // Adiciona nova
-            selecoesBilhete.push({ jogo, escolha, odd, tipo });
+            selecoesBilhete.push({ jogo, escolha, odd: parseFloat(odd) });
             atualizarBilheteUI();
         }
 
@@ -408,7 +642,7 @@
             contador.innerText = selecoesBilhete.length;
 
             if (selecoesBilhete.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-500 text-center py-6">Seu bilhete está vazio. Clique nas odds dos jogos para adicionar palpites.</p>`;
+                container.innerHTML = `<p class="text-xs text-slate-500 text-center py-6">Seu bilhete está vazio. Clique nas cotações dos jogos para adicionar palpites.</p>`;
                 resumo.classList.add('hidden');
                 return;
             }
@@ -423,7 +657,7 @@
                     <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-xs flex justify-between items-center">
                         <div>
                             <span class="text-slate-400 block font-semibold">${s.jogo}</span>
-                            <span class="text-emerald-400 font-bold">${s.escolha}</span> <span class="text-slate-500">(${s.odd})</span>
+                            <span class="text-emerald-400 font-bold">${s.escolha}</span> <span class="text-slate-500">(${s.odd.toFixed(2)})</span>
                         </div>
                         <button onclick="removerSelecao('${s.jogo}')" class="text-slate-500 hover:text-red-400 px-2 py-1"><i class="fa-solid fa-xmark"></i></button>
                     </div>
