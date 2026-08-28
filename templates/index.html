@@ -20,17 +20,27 @@
                 </div>
             </div>
             
-            <nav class="flex space-x-2 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
-                <a href="/" class="px-4 py-1.5 rounded-lg text-xs font-bold transition {% if aba_ativa == 'partidas' %}bg-emerald-500 text-slate-950{% else %}text-slate-300 hover:text-white{% endif %}">
-                    ⚽ Partidas & Odds
-                </a>
-                <a href="/apostas" class="px-4 py-1.5 rounded-lg text-xs font-bold transition {% if aba_ativa == 'apostas' %}bg-emerald-500 text-slate-950{% else %}text-slate-300 hover:text-white{% endif %}">
-                    🎯 Criar Aposta
-                </a>
-                <a href="/elencos" class="px-4 py-1.5 rounded-lg text-xs font-bold transition {% if aba_ativa == 'elencos' %}bg-emerald-500 text-slate-950{% else %}text-slate-300 hover:text-white{% endif %}">
-                    👥 Elencos & Times
-                </a>
-            </nav>
+            <div class="flex items-center gap-4">
+                <nav class="flex space-x-2 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
+                    <a href="/" class="px-4 py-1.5 rounded-lg text-xs font-bold transition {% if aba_ativa == 'partidas' %}bg-emerald-500 text-slate-950{% else %}text-slate-300 hover:text-white{% endif %}">
+                        ⚽ Partidas & Odds
+                    </a>
+                    <a href="/apostas" class="px-4 py-1.5 rounded-lg text-xs font-bold transition {% if aba_ativa == 'apostas' %}bg-emerald-500 text-slate-950{% else %}text-slate-300 hover:text-white{% endif %}">
+                        🎯 Criar Aposta
+                    </a>
+                    <a href="/elencos" class="px-4 py-1.5 rounded-lg text-xs font-bold transition {% if aba_ativa == 'elencos' %}bg-emerald-500 text-slate-950{% else %}text-slate-300 hover:text-white{% endif %}">
+                        👥 Elencos & Times
+                    </a>
+                </nav>
+                
+                {% if usuario %}
+                <div class="bg-slate-950 border border-slate-800 px-3 py-1.5 rounded-xl text-xs flex items-center gap-2">
+                    <span class="text-slate-400">🪙 Saldo:</span>
+                    <span class="font-black text-emerald-400">{{ "%.2f"|format(usuario.creditos) }} cr</span>
+                    <a href="/logout" class="ml-2 text-red-400 hover:underline text-[10px]">Sair</a>
+                </div>
+                {% endif %}
+            </div>
         </div>
     </header>
 
@@ -241,9 +251,6 @@
                 </div>
                 <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-lg text-center py-12">
                     <p class="text-slate-400 text-sm mb-4">Módulo de criação de apostas personalizadas pronto para uso.</p>
-                    <button onclick="mostrarNotificacao('Aposta criada com sucesso!')" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl transition text-sm">
-                        Registrar Bilhete
-                    </button>
                 </div>
                 {% endif %}
 
@@ -252,36 +259,18 @@
                     <h2 class="text-lg font-bold text-slate-200 flex items-center gap-2">
                         <span>👥</span> Elencos & Times Participantes
                     </h2>
-                    <p class="text-xs text-slate-400">Plantéis oficiais da Liga da Resenha com numeração e posições corretas</p>
+                    <p class="text-xs text-slate-400">Plantéis oficiais enviados até o momento</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg">
-                        <h3 class="font-black text-emerald-400 text-base mb-2 border-b border-slate-800 pb-2">Casados F.C</h3>
-                        <ul class="text-xs text-slate-300 space-y-1.5">
-                            <li><span class="text-emerald-400 font-bold">10</span> - GLM <span class="text-slate-500 text-[10px]">(Pivô, Zaga, Meio)</span></li>
-                            <li><span class="text-emerald-400 font-bold">9</span> - Fernando <span class="text-slate-500 text-[10px]">(Ala, Pivô, Meio)</span></li>
-                            <li><span class="text-emerald-400 font-bold">18</span> - Leal <span class="text-slate-500 text-[10px]">(Ala, Pivô)</span></li>
-                            <li><span class="text-emerald-400 font-bold">8</span> - William <span class="text-slate-500 text-[10px]">(Ala, Zaga, Meio)</span></li>
-                            <li><span class="text-emerald-400 font-bold">21</span> - Felipe <span class="text-slate-500 text-[10px]">(Ala, Pivô, Zaga)</span></li>
-                            <li><span class="text-emerald-400 font-bold">13</span> - Marcelo <span class="text-slate-500 text-[10px]">(Zaga, Ala)</span></li>
-                            <li><span class="text-emerald-400 font-bold">4</span> - Leão <span class="text-slate-500 text-[10px]">(Ala)</span></li>
-                            <li><span class="text-emerald-400 font-bold">67</span> - War <span class="text-slate-500 text-[10px]">(Zaga, Meio)</span></li>
-                            <li><span class="text-emerald-400 font-bold">5</span> - Pedro Constrol <span class="text-slate-500 text-[10px]">(Zaga, Meio)</span></li>
-                            <li><span class="text-emerald-400 font-bold">7</span> - Lucas <span class="text-slate-500 text-[10px]">(Meio)</span></li>
-                            <li><span class="text-emerald-400 font-bold">11</span> - Nivaldo <span class="text-slate-500 text-[10px]">(Pivô)</span></li>
-                        </ul>
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg opacity-75">
+                        <h3 class="font-black text-slate-400 text-base mb-2 border-b border-slate-800 pb-2">Casados F.C</h3>
+                        <p class="text-xs text-slate-500 italic py-4 text-center">Aguardando envio dos jogadores...</p>
                     </div>
 
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg">
-                        <h3 class="font-black text-emerald-400 text-base mb-2 border-b border-slate-800 pb-2">Atlético Jóquei</h3>
-                        <ul class="text-xs text-slate-300 space-y-1.5">
-                            <li><span class="text-emerald-400 font-bold">14</span> - Warllyson <span class="text-slate-500 text-[10px]">(MEI, Central, Armador)</span></li>
-                            <li><span class="text-emerald-400 font-bold">73</span> - Ryan <span class="text-slate-500 text-[10px]">(Zaga, Fixo)</span></li>
-                            <li><span class="text-emerald-400 font-bold">12</span> - Euner <span class="text-slate-500 text-[10px]">(Armador/Central)</span></li>
-                            <li><span class="text-emerald-400 font-bold">9</span> - Queiroz <span class="text-slate-500 text-[10px]">(Armador/Meia)</span></li>
-                            <li><span class="text-emerald-400 font-bold">5</span> - Hugo F. <span class="text-slate-500 text-[10px]">(Zagueiro/Fixo)</span></li>
-                        </ul>
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg opacity-75">
+                        <h3 class="font-black text-slate-400 text-base mb-2 border-b border-slate-800 pb-2">Atlético Jóquei</h3>
+                        <p class="text-xs text-slate-500 italic py-4 text-center">Aguardando envio dos jogadores...</p>
                     </div>
 
                     <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg">
@@ -323,7 +312,7 @@
 
                     <div class="border-t border-slate-800 pt-3 space-y-3">
                         <div>
-                            <label class="block text-[10px] text-slate-400 uppercase font-bold mb-1">Valor da Aposta (R$)</label>
+                            <label class="block text-[10px] text-slate-400 uppercase font-bold mb-1">Valor da Aposta (Créditos)</label>
                             <input type="number" id="valor-aposta" oninput="atualizarBilhete()" placeholder="0.00" min="1" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-100 font-bold focus:outline-none focus:border-emerald-500">
                         </div>
 
@@ -334,7 +323,7 @@
 
                         <div class="flex justify-between text-sm font-bold text-emerald-400 bg-slate-950 p-2 rounded-lg border border-slate-800">
                             <span>Retorno Possível:</span>
-                            <span id="retorno-possivel">R$ 0,00</span>
+                            <span id="retorno-possivel">0.00 cr</span>
                         </div>
 
                         <button onclick="finalizarAposta()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black py-2.5 rounded-xl transition text-xs uppercase tracking-wider shadow-lg">
@@ -350,13 +339,13 @@
     <script>
         let bilhete = [];
 
-        function mostrarNotificacao(mensagem) {
+        function mostrarNotificacao(mensagem, tipo = 'sucesso') {
             const container = document.getElementById('toast-container');
             if (!container) return;
             
             const toast = document.createElement('div');
             toast.innerText = mensagem;
-            toast.style.background = '#10B981';
+            toast.style.background = tipo === 'erro' ? '#EF4444' : '#10B981';
             toast.style.color = '#020617';
             toast.style.padding = '12px 20px';
             toast.style.borderRadius = '8px';
@@ -409,7 +398,7 @@
             if (bilhete.length === 0) {
                 container.innerHTML = '<p class="text-xs text-slate-500 text-center py-6">Seu bilhete está vazio. Clique nas odds para palpitar!</p>';
                 totalOddEl.innerText = '1.00';
-                retornoEl.innerText = 'R$ 0,00';
+                retornoEl.innerText = '0.00 cr';
                 return;
             }
 
@@ -433,24 +422,44 @@
 
             const valor = parseFloat(valorInput.value) || 0;
             const retorno = valor * oddTotal;
-            retornoEl.innerText = `R$ ${retorno.toFixed(2)}`;
+            retornoEl.innerText = `${retorno.toFixed(2)} cr`;
         }
 
         function finalizarAposta() {
             if (bilhete.length === 0) {
-                mostrarNotificacao('Adicione pelo menos uma seleção ao bilhete!');
+                mostrarNotificacao('Adicione pelo menos uma seleção ao bilhete!', 'erro');
                 return;
             }
             const valorInput = document.getElementById('valor-aposta');
             const valor = parseFloat(valorInput.value) || 0;
             if (valor <= 0) {
-                mostrarNotificacao('Insira um valor válido para a aposta!');
+                mostrarNotificacao('Insira um valor válido de créditos!', 'erro');
                 return;
             }
-            mostrarNotificacao('🎉 Aposta registrada com sucesso!');
-            bilhete = [];
-            valorInput.value = '';
-            atualizarBilhete();
+
+            let oddTotal = parseFloat(document.getElementById('total-odd').innerText);
+
+            // Envia a aposta para o Back-end Flask salvar no banco de dados e descontar do saldo
+            fetch('/fazer_aposta', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ valor: valor, selecoes: bilhete, odd_total: oddTotal })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'sucesso') {
+                    mostrarNotificacao('🎉 Aposta registrada com sucesso!');
+                    bilhete = [];
+                    valorInput.value = '';
+                    atualizarBilhete();
+                    setTimeout(() => location.reload(), 1500); // Atualiza para mostrar o novo saldo
+                } else {
+                    mostrarNotificacao(data.mensagem, 'erro');
+                }
+            })
+            .catch(error => {
+                mostrarNotificacao('Erro ao registrar aposta.', 'erro');
+            });
         }
     </script>
 </body>
