@@ -1,74 +1,166 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
+import json
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'chave-secreta-liga-da-resenha-2026'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///liga_resenha.db'
+db = SQLAlchemy(app)
 
-# Banco de dados central da Liga da Resenha
-LIGA_DADOS = {
-    "campeonato": "Liga da Resenha",
-    "formato": "Fase de grupos em turno único + Final em jogo único",
-    "calendario": [
-        {"id": 1, "rodada": "1ª Rodada", "data": "12/09/2026", "horario": "18:00 - 20:00", "mandante": "Casados F.C", "visitante": "Atlético Jóquei", "odd_casa": 1.85, "odd_empate": 3.40, "odd_fora": 2.10},
-        {"id": 2, "rodada": "1ª Rodada", "data": "12/09/2026", "horario": "20:00 - 22:00", "mandante": "WCMT F.C", "visitante": "Clube Desportivo Panteras", "odd_casa": 1.90, "odd_empate": 3.30, "odd_fora": 2.00},
-        {"id": 3, "rodada": "2ª Rodada", "data": "26/09/2026", "horario": "18:00 - 20:00", "mandante": "Casados F.C", "visitante": "WCMT F.C", "odd_casa": 2.20, "odd_empate": 3.20, "odd_fora": 1.75},
-        {"id": 4, "rodada": "2ª Rodada", "data": "26/09/2026", "horario": "20:00 - 22:00", "mandante": "Atlético Jóquei", "visitante": "Clube Desportivo Panteras", "odd_casa": 2.05, "odd_empate": 3.10, "odd_fora": 1.80},
-        {"id": 5, "rodada": "3ª Rodada", "data": "10/10/2026", "horario": "18:00 - 20:00", "mandante": "Casados F.C", "visitante": "Clube Desportivo Panteras", "odd_casa": 1.95, "odd_empate": 3.25, "odd_fora": 1.95},
-        {"id": 6, "rodada": "3ª Rodada", "data": "10/10/2026", "horario": "20:00 - 22:00", "mandante": "Atlético Jóquei", "visitante": "WCMT F.C", "odd_casa": 2.15, "odd_empate": 3.30, "odd_fora": 1.70},
-        {"id": 7, "rodada": "Grande Final", "data": "31/10/2026", "horario": "18:00 - 20:00", "mandante": "1º Colocado da Fase", "visitante": "2º Colocado da Fase", "odd_casa": 1.80, "odd_empate": 3.50, "odd_fora": 1.90}
-    ],
-    "mercados_especiais": [
-        {"mercado": "Total de Gols", "opcoes": ["Mais de 2.5 (1.75)", "Menos de 2.5 (2.00)"]},
-        {"mercado": "Cartões Amarelos/Vermelhos", "opcoes": ["Mais de 3.5 cartões (1.80)", "Menos de 3.5 cartões (1.90)"]},
-        {"mercado": "Escanteios", "opcoes": ["Mais de 8.5 escanteios (1.85)", "Menos de 8.5 escanteios (1.85)"]}
-    ],
-    "elencos": {
-        "Casados F.C": [
-            {"nome": "Elenco em cadastro", "numero": "-", "posicao": "Geral"}
-        ],
-        "Atlético Jóquei": [
-            {"nome": "Elenco em cadastro", "numero": "-", "posicao": "Geral"}
-        ],
-        "WCMT F.C": [
-            {"nome": "Paulo", "numero": 7, "posicao": "Armador, central"},
-            {"nome": "Warllyson", "numero": 14, "posicao": "MEI, central, armador"},
-            {"nome": "Ryan", "numero": 73, "posicao": "Saga, Fixo"},
-            {"nome": "Euner", "numero": 12, "posicao": "Armador/Central"},
-            {"nome": "Jonathan", "numero": 23, "posicao": "Goleiro"},
-            {"nome": "Queiroz", "numero": 9, "posicao": "Armador/Meia"},
-            {"nome": "Hugo F.", "numero": 5, "posicao": "Zagueiro/Fixo"},
-            {"nome": "Nicolas", "numero": 8, "posicao": "Fixo/Zagueiro"},
-            {"nome": "Anderson", "numero": 69, "posicao": "Ala"},
-            {"nome": "Regino", "numero": 11, "posicao": "Ala/Atacante"},
-            {"nome": "Ronaldo", "numero": 21, "posicao": "Zagueiro/Fixo"},
-            {"nome": "Patrick", "numero": 17, "posicao": "Ala/Pivô"}
-        ],
-        "Clube Desportivo Panteras": [
-            {"nome": "Fernando", "numero": 9, "posicao": "Ala, Pivô, meio"},
-            {"nome": "Leal", "numero": 18, "posicao": "Ala, Pivô"},
-            {"nome": "GLM", "numero": 10, "posicao": "Pivô, Zaga, meio"},
-            {"nome": "William", "numero": 8, "posicao": "Ala, Zaga, meio"},
-            {"nome": "Felipe", "numero": 21, "posicao": "Ala, pivô e zaga"},
-            {"nome": "Marcelo", "numero": 13, "posicao": "Zaga e ala"},
-            {"nome": "Leão", "numero": 4, "posicao": "Ala"},
-            {"nome": "War", "numero": 67, "posicao": "Zaga, meio"},
-            {"nome": "Pedro Constrol", "numero": 5, "posicao": "Zaga, meio"},
-            {"nome": "Lucas", "numero": 7, "posicao": "Meio"},
-            {"nome": "Nivaldo", "numero": 11, "posicao": "Pivô"},
-            {"nome": "Greg", "numero": 31, "posicao": "Goleiro"}
-        ]
-    }
-}
+# Modelo de Usuário
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    password = db.Column(db.String(200), nullable=False)
+    creditos = db.Column(db.Float, default=10.0) # Começa com 10 créditos!
+    is_admin = db.Column(db.Boolean, default=False)
+
+# Modelo de Aposta
+class Aposta(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    selecoes = db.Column(db.Text, nullable=False)
+    valor = db.Column(db.Float, nullable=False)
+    odd_total = db.Column(db.Float, nullable=False)
+    retorno = db.Column(db.Float, nullable=False)
+    status = db.Column(db.String(20), default='Pendente') # Pendente, Ganha, Perdida
+    user = db.relationship('User', backref=db.backref('apostas', lazy=True))
+
+# Criar banco e admin padrão
+with app.app_context():
+    db.create_all()
+    if not User.query.filter_by(username='admin').first():
+        admin = User(
+            username='admin',
+            password=generate_password_hash('admin123'),
+            creditos=1000.0,
+            is_admin=True
+        )
+        db.session.add(admin)
+        db.session.commit()
 
 @app.route('/')
 def index():
-    return render_template('index.html', liga=LIGA_DADOS, aba_ativa='partidas')
-
-@app.route('/apostas')
-def apostas():
-    return render_template('index.html', liga=LIGA_DADOS, aba_ativa='apostas')
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    user = User.query.get(session['user_id'])
+    return render_template('index.html', aba_ativa='partidas', usuario=user)
 
 @app.route('/elencos')
 def elencos():
-    return render_template('index.html', liga=LIGA_DADOS, aba_ativa='elencos')
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    user = User.query.get(session['user_id'])
+    return render_template('index.html', aba_ativa='elencos', usuario=user)
+
+@app.route('/apostas')
+def apostas_aba():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    user = User.query.get(session['user_id'])
+    return render_template('index.html', aba_ativa='apostas', usuario=user)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = User.query.filter_by(username=username).first()
+        
+        if user and check_password_hash(user.password, password):
+            session['user_id'] = user.id
+            session['username'] = user.username
+            session['is_admin'] = user.is_admin
+            flash('Login realizado com sucesso!', 'success')
+            return redirect(url_for('index'))
+        else:
+            flash('Usuário ou senha inválidos!', 'error')
+    return render_template('login.html')
+
+@app.route('/cadastro', methods=['GET', 'POST'])
+def cadastro():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        if User.query.filter_by(username=username).first():
+            flash('Este nome de usuário já está em uso!', 'error')
+            return redirect(url_for('cadastro'))
+            
+        hashed_pw = generate_password_hash(password)
+        novo_usuario = User(username=username, password=hashed_pw, creditos=10.0)
+        db.session.add(novo_usuario)
+        db.session.commit()
+        
+        flash('Cadastro realizado! Você ganhou 10 créditos iniciais!', 'success')
+        return redirect(url_for('login'))
+    return render_template('cadastro.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
+
+@app.route('/fazer_aposta', methods=['POST'])
+def fazer_aposta():
+    if 'user_id' not in session:
+        return {'status': 'erro', 'mensagem': 'Faça login primeiro!'}
+    
+    data = request.get_json()
+    valor = float(data.get('valor', 0))
+    selecoes = data.get('selecoes', [])
+    odd_total = float(data.get('odd_total', 1))
+    
+    user = User.query.get(session['user_id'])
+    
+    if valor <= 0:
+        return {'status': 'erro', 'mensagem': 'Valor de aposta inválido.'}
+    if user.creditos < valor:
+        return {'status': 'erro', 'mensagem': 'Créditos insuficientes!'}
+    if not selecoes:
+        return {'status': 'erro', 'mensagem': 'Adicione seleções ao bilhete.'}
+        
+    # Desconta créditos
+    user.creditos -= valor
+    retorno = valor * odd_total
+    
+    nova_aposta = Aposta(
+        user_id=user.id,
+        selecoes=json.dumps(selecoes),
+        valor=valor,
+        odd_total=odd_total,
+        retorno=retorno,
+        status='Pendente'
+    )
+    db.session.add(nova_aposta)
+    db.session.commit()
+    
+    return {'status': 'sucesso', 'novos_creditos': user.creditos}
+
+@app.route('/admin')
+def admin():
+    if 'user_id' not in session or not session.get('is_admin'):
+        flash('Acesso negado. Apenas o administrador.', 'error')
+        return redirect(url_for('index'))
+    
+    usuarios = User.query.all()
+    apostas = Aposta.query.order_by(Aposta.id.desc()).all()
+    return render_template('admin.html', usuarios=usuarios, apostas=apostas)
+
+@app.route('/admin/liquidar/<int:aposta_id>/<status>')
+def liquidar_aposta(aposta_id, status):
+    if 'user_id' not in session or not session.get('is_admin'):
+        return redirect(url_for('index'))
+        
+    aposta = Aposta.query.get(aposta_id)
+    if aposta and aposta.status == 'Pendente':
+        aposta.status = status
+        if status == 'Ganha':
+            aposta.user.creditos += aposta.retorno
+        db.session.commit()
+        
+    return redirect(url_for('admin'))
 
 if __name__ == '__main__':
     app.run(debug=True)
