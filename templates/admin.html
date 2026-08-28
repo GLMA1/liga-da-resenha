@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - Liga da Resenha</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-white min-h-screen p-6">
+    <div class="max-w-6xl mx-auto">
+        <div class="flex justify-between items-center mb-8 bg-slate-900 p-6 rounded-xl border border-slate-800">
+            <div>
+                <h1 class="text-2xl font-black text-emerald-400">⚙️ PAINEL DO ADMINISTRADOR</h1>
+                <p class="text-slate-400 text-sm">Gerenciamento de usuários e liquidação de apostas</p>
+            </div>
+            <a href="{{ url_for('index') }}" class="bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded font-semibold text-sm transition">Voltar ao Site</a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
+                <h2 class="text-xl font-bold mb-4 text-emerald-400">Usuários Cadastrados & Saldos</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-800 text-slate-400">
+                            <tr>
+                                <th class="p-3">ID</th>
+                                <th class="p-3">Usuário</th>
+                                <th class="p-3">Créditos</th>
+                                <th class="p-3">Tipo</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800">
+                            {% for u in usuarios %}
+                            <tr>
+                                <td class="p-3">{{ u.id }}</td>
+                                <td class="p-3 font-semibold">{{ u.username }}</td>
+                                <td class="p-3 text-emerald-400 font-bold">C$ {{ "%.2f"|format(u.creditos) }}</td>
+                                <td class="p-3">{% if u.is_admin %}<span class="bg-purple-500/20 text-purple-300 px-2 py-1 rounded text-xs">Admin</span>{% else %}<span class="bg-slate-800 text-slate-300 px-2 py-1 rounded text-xs">Membro</span>{% endif %}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
+                <h2 class="text-xl font-bold mb-4 text-emerald-400">Apostas Realizadas</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-800 text-slate-400">
+                            <tr>
+                                <th class="p-3">Usuário</th>
+                                <th class="p-3">Valor / Retorno</th>
+                                <th class="p-3">Status</th>
+                                <th class="p-3">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800">
+                            {% for a in apostas %}
+                            <tr>
+                                <td class="p-3 font-semibold">{{ a.user.username }}</td>
+                                <td class="p-3">C$ {{ "%.2f"|format(a.valor) }} <br><span class="text-xs text-emerald-400">Ret: C$ {{ "%.2f"|format(a.retorno) }}</span></td>
+                                <td class="p-3">
+                                    {% if a.status == 'Pendente' %}
+                                        <span class="bg-amber-500/20 text-amber-300 px-2 py-1 rounded text-xs">Pendente</span>
+                                    {% elif a.status == 'Ganha' %}
+                                        <span class="bg-emerald-500/20 text-emerald-300 px-2 py-1 rounded text-xs">Ganha</span>
+                                    {% else %}
+                                        <span class="bg-red-500/20 text-red-300 px-2 py-1 rounded text-xs">Perdida</span>
+                                    {% endif %}
+                                </td>
+                                <td class="p-3">
+                                    {% if a.status == 'Pendente' %}
+                                    <div class="flex gap-2">
+                                        <a href="{{ url_for('liquidar_aposta', aposta_id=a.id, status='Ganha') }}" class="bg-emerald-600 hover:bg-emerald-500 px-2 py-1 rounded text-xs font-bold">Ganhou</a>
+                                        <a href="{{ url_for('liquidar_aposta', aposta_id=a.id, status='Perdida') }}" class="bg-red-600 hover:bg-red-500 px-2 py-1 rounded text-xs font-bold">Perdeu</a>
+                                    </div>
+                                    {% else %}
+                                    <span class="text-xs text-slate-500">Liquidada</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
